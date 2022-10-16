@@ -1,3 +1,4 @@
+const { X_OK } = require('constants');
 var express = require('express');
 var router = express.Router();
 var app = express();
@@ -9,33 +10,28 @@ router.get('/', function(req, res, next) {
 });
 
 app.post('/calculate', function (req, res) {
-
-  const PythonShell = require('python-shell').PythonShell;
-
-  PythonShell.run('routes/a.py', null, function (err) {
-    if (err) throw err;
-    console.log('finished');
-    });
-
-  let text = req.body.payload.text;
-
+  let text = ""
+  const { spawn } = require('child_process');
+  const pyProg = spawn('python', ['speechrecognition.py', req]);
+  pyProg.stdout.on('data', function(data) {
+    text = (data.toString());
+  });
   let calculationPayload = {
     ans: "",
   }
 
-  const cohere = require("cohere-ai");
-  cohere.init("knPvUVwmmMv2fn0ipvFRSpfXE4zl5KrTIATX7fFM");
+  const cohere = require('cohere-ai'); 
+cohere.init('{apiKey}'); 
   (async () => { 
-    const response = await cohere.classify( 
-      model='large', 
-      inputs=[text], 
-      examples=[Example("Red purple orange green yellow", "Incorrect"), Example("The bee is happy.", "Correct"), Example("The bee has wings.", "Correct"), Example("The bee is yellow and black.", "Correct"), Example("The bee is flying.", "Correct"), Example("The bee is smiling.", "Correct"), Example("This is a waving bee.", "Correct"), Example("The background is colorful.", "Correct"), Example("There are bright colors.", "Correct"), Example("It is yellow and black.", "Correct"), Example("The bee has a stinger.", "Correct"), Example("It has six legs.", "Correct"), Example("I like the bee", "Correct"), Example("The bee is winking", "Correct"), Example("The bee’s eyes are closed", "Correct"), Example("The bee has a pointy tail", "Correct"), Example("The bee’s legs are brown", "Correct"), Example("It’s legs are brown", "Correct"), Example("I like the colorful background", "Correct"), Example("The bee has horns", "Correct"), Example("This is a fuzzy bee", "Correct"), Example("I like the bee’s smile", "Correct"), Example("The bee has blue wings", "Correct"), Example("The bee is fuzzy", "Correct"), Example("It has a pointy tail", "Correct"), Example("Her eyes are closed", "Correct"), Example("She is happy", "Correct"), Example("I like the orange background", "Correct"), Example("I don’t like the colors", "Correct"), Example("The red looks pretty", "Correct"), Example("I like the yellow on the bee", "Correct"), Example("Why is the bee smiling", "Correct"), Example("Why is the bee’s eye closed", "Correct"), Example("What’s the bee’s name", "Correct"), Example("It’s yellow", "Correct"), Example("It’s yellow and black", "Correct"), Example("It’s smiling", "Correct"), Example("It has 6 legs", "Correct"), Example("This is a bird.", "Incorrect"), Example("The bee is sad.", "Incorrect"), Example("I like sandwiches.", "Incorrect"), Example("Bee wing to happy.", "Incorrect"), Example("I don’t know.", "Incorrect"), Example("The bee is mad", "Incorrect"), Example("The dog barks", "Incorrect"), Example("Dog Bee We", "Incorrect"), Example("His name is Bob", "Incorrect"), Example("There are two bees", "Incorrect"), Example("What a pretty butterfly", "Incorrect"), Example("The leg is purple", "Incorrect")]); 
-    let x = `The confidence levels of the labels are ${JSON.stringify(response.body.classifications)}`
+    const response = await cohere.classify({ 
+      model: 'large', 
+      inputs: [text], 
+      examples: [{"text": "Red purple orange green yellow", "label": "Incorrect"}, {"text": "The bee is happy.", "label": "Correct"}, {"text": "The bee has wings.", "label": "Correct"}, {"text": "The bee is yellow and black.", "label": "Correct"}, {"text": "The bee is flying.", "label": "Correct"}, {"text": "The bee is smiling.", "label": "Correct"}, {"text": "This is a waving bee.", "label": "Correct"}, {"text": "The background is colorful.", "label": "Correct"}, {"text": "There are bright colors.", "label": "Correct"}, {"text": "It is yellow and black.", "label": "Correct"}, {"text": "The bee has a stinger.", "label": "Correct"}, {"text": "It has six legs.", "label": "Correct"}, {"text": "I like the bee", "label": "Correct"}, {"text": "The bee is winking", "label": "Correct"}, {"text": "The bee’s eyes are closed", "label": "Correct"}, {"text": "The bee has a pointy tail", "label": "Correct"}, {"text": "The bee’s legs are brown", "label": "Correct"}, {"text": "It’s legs are brown", "label": "Correct"}, {"text": "I like the colorful background", "label": "Correct"}, {"text": "The bee has horns", "label": "Correct"}, {"text": "This is a fuzzy bee", "label": "Correct"}, {"text": "I like the bee’s smile", "label": "Correct"}, {"text": "The bee has blue wings", "label": "Correct"}, {"text": "The bee is fuzzy", "label": "Correct"}, {"text": "It has a pointy tail", "label": "Correct"}, {"text": "Her eyes are closed", "label": "Correct"}, {"text": "She is happy", "label": "Correct"}, {"text": "I like the orange background", "label": "Correct"}, {"text": "I don’t like the colors", "label": "Correct"}, {"text": "The red looks pretty", "label": "Correct"}, {"text": "I like the yellow on the bee", "label": "Correct"}, {"text": "Why is the bee smiling", "label": "Correct"}, {"text": "Why is the bee’s eye closed", "label": "Correct"}, {"text": "What’s the bee’s name", "label": "Correct"}, {"text": "It’s yellow", "label": "Correct"}, {"text": "It’s yellow and black", "label": "Correct"}, {"text": "It’s smiling", "label": "Correct"}, {"text": "It has 6 legs", "label": "Correct"}, {"text": "This is a bird.", "label": "Incorrect"}, {"text": "The bee is sad.", "label": "Incorrect"}, {"text": "I like sandwiches.", "label": "Incorrect"}, {"text": "Bee wing to happy.", "label": "Incorrect"}, {"text": "I don’t know.", "label": "Incorrect"}, {"text": "The bee is mad", "label": "Incorrect"}, {"text": "The dog barks", "label": "Incorrect"}, {"text": "Dog Bee We", "label": "Incorrect"}, {"text": "His name is Bob", "label": "Incorrect"}, {"text": "There are two bees", "label": "Incorrect"}, {"text": "What a pretty butterfly", "label": "Incorrect"}, {"text": "The leg is purple", "label": "Incorrect"}] 
+    }); 
+    let x = `The confidence levels of the labels are ${JSON.stringify(response.body.classifications)}`; 
     calculationPayload.ans = x
-    console.log(x); 
-    
-  
-    
+    res.write(x);
+    res.end('end');
   })(); 
 });
 
