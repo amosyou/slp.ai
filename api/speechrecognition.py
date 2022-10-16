@@ -14,6 +14,7 @@ def main():
     api_key = open("arched-gear-365707-4c8e178a8a28.json").read()
     message = r.recognize_google_cloud(audio, api_key)
     print(message)
+    return message
 
 if __name__ == "__main__":
     main()
