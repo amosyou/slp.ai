@@ -38,8 +38,13 @@
   }
 }
 
-img {
-  width: 400px;
+.logo_pic {
+  width: 600px;
+  height: 100%;
+}
+
+.story_pic {
+  width: 700px;
   height: 100%;
 }
 
@@ -54,4 +59,35 @@ img {
 ._1ceqH ._1lB9c {
   background: #212121;
   position: relative;
+}
+
+
+h1 {
+  font-size: 36pt;
+  font-family: Helvetica;
+}
+
+h2 {
+  font-weight: normal;
+  font-family: Helvetica;
+  font-size: 24pt;
+  padding-left: 6em;
+  padding-right: 6em;
+}
+
+.recorderSettings {
+  width: 700px;
+  height: 100%;
+  
+}
+
+.buttonStyle {
+  background-color: #282c34;
+  color: white;
+  font-size: 20px;
+  padding: 10px 60px;
+  border-radius: 10px;
+  margin: 10px 0px;
+  cursor: pointer;
+  height: 50px;
 }

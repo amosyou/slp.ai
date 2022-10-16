@@ -44,20 +44,23 @@ const Story = () => {
   return (
     <div>
       <div className='flex-container'>
-        <h1>Storytelling Coherence</h1>
+        <h1>Storytelling Test</h1>
         <img src={require('../story.png')} id='story_pic'/>
+        <h2><br/>Tell a story about this bee from this picture in 5 sentences!</h2>
+        <div className='recorderSettings'>
+          <Recorder
+            record={true}
+            title={"New recording"}
+            audioURL={state.audioDetails.url}
+            showUIAudio
+            handleAudioStop={data => handleAudioStop(data)}
+            handleAudioUpload={data => handleAudioUpload(data)}
+            handleCountDown={data => handleCountDown(data)}
+            handleReset={() => handleReset()}
+            mimeTypeToUseWhenRecording={`audio/webm`} // For specific mimetype.
+          />
+        </div>
       </div>
-      <Recorder
-        record={true}
-        title={"New recording"}
-        audioURL={state.audioDetails.url}
-        showUIAudio
-        handleAudioStop={data => handleAudioStop(data)}
-        handleAudioUpload={data => handleAudioUpload(data)}
-        handleCountDown={data => handleCountDown(data)}
-        handleReset={() => handleReset()}
-        mimeTypeToUseWhenRecording={`audio/webm`} // For specific mimetype.
-      />
     </div>
   );
 };

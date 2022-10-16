@@ -3,18 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-
-import Home from "./components/home";
-import Story from "./components/story";
-import Result from  "./components/result";
 
 ReactDOM.render((
   <Router>
