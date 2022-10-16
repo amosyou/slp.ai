@@ -1,21 +1,19 @@
 import argparse
-from ast import parse
+import speech_recognition as sr
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", help="speech-to-text")
+parser.add_argument("-stt", help="speech-to-text")
 args = parser.parse_args()
 
 def main():
-    import speech_recognition as sr
     r = sr.Recognizer()
-    test = sr.AudioFile(args.f)
+    test = sr.AudioFile("/Users/hannahkuo/Downloads/" + args.stt)
     with test as source:
         audio = r.record(source)
 
     api_key = open("arched-gear-365707-4c8e178a8a28.json").read()
     message = r.recognize_google_cloud(audio, api_key)
-
-    return message
+    print(message)
 
 if __name__ == "__main__":
     main()
