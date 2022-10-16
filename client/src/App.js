@@ -1,10 +1,10 @@
 // import logo from './logo.svg';
-// import './App.css';
+import './App.css';
 import React, { Component } from 'react';
 // import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link
 } from "react-router-dom";
@@ -15,11 +15,10 @@ import Result from  "./components/result";
 
 function App() {
   return (
-    <div>
-      <h1>
-        F:Ljae;flkjf;
-      </h1>
-    </div>
+    <Routes> {/* The Switch decides which component to show based on the current URL.*/}
+      <Route path='/' element = {<Home/>}/>
+      <Route path='/story' element = {<Story/>}/>
+    </Routes>
   );
 }
 

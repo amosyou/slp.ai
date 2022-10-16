@@ -19,10 +19,6 @@ import Result from  "./components/result";
 ReactDOM.render((
   <Router>
     <App />
-    <Routes> {/* The Switch decides which component to show based on the current URL.*/}
-      <Route path='/' element = {<Home/>}/>
-      <Route path='/story' element = {<Story/>}/>
-    </Routes>
   </Router>
   ), document.getElementById('root')
 );
